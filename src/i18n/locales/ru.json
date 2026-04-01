@@ -1,0 +1,97 @@
+{
+  "app": {
+    "name": "АвтоСтраж",
+    "tagline": "Ваш надежный помощник на дороге"
+  },
+  "nav": {
+    "record": "Запись",
+    "recordings": "Записи",
+    "stats": "Статистика",
+    "settings": "Настройки"
+  },
+  "camera": {
+    "startRecording": "Начать запись",
+    "stopRecording": "Остановить",
+    "switchCamera": "Переключить камеру",
+    "toggleMute": "Вкл/Выкл звук",
+    "photo": "Фото",
+    "sos": "SOS",
+    "holdFor3Seconds": "Держите 3 сек"
+  },
+  "location": {
+    "speed": "Скорость",
+    "km/h": "км/ч",
+    "coordinates": "Координаты",
+    "waitingForGPS": "Ожидание GPS...",
+    "gpsError": "GPS недоступен"
+  },
+  "recordings": {
+    "title": "Мои записи",
+    "local": "Локальные",
+    "cloud": "Облако",
+    "noRecordings": "Нет записей",
+    "recordFirst": "Сделайте первую запись",
+    "duration": "Длительность",
+    "size": "Размер",
+    "date": "Дата",
+    "play": "Воспроизвести",
+    "download": "Скачать",
+    "delete": "Удалить",
+    "uploadToCloud": "Загрузить в облако",
+    "courtExport": "Судебный экспорт",
+    "sync": "Синхронизировать"
+  },
+  "adas": {
+    "enable": "Включить ADAS",
+    "disable": "Выключить ADAS",
+    "parkingMode": "Режим парковки",
+    "soundOn": "Звук вкл",
+    "soundOff": "Звук выкл",
+    "objectsDetected": "Объектов обнаружено",
+    "distance": "Расстояние",
+    "collisionWarning": "Опасность столкновения!",
+    "tooClose": "Слишком близко!",
+    "safe": "Безопасно",
+    "caution": "Внимание",
+    "danger": "Опасность"
+  },
+  "court": {
+    "exportTitle": "Судебный пакет",
+    "caseNumber": "Номер дела",
+    "witnessNumber": "Номер явки",
+    "officerName": "ФИО сотрудника",
+    "courtName": "Название суда",
+    "incidentDate": "Дата происшествия",
+    "incidentPlace": "Место происшествия",
+    "description": "Описание",
+    "createPackage": "Создать пакет",
+    "legalEvidence": "СУДЕБНОЕ ДОКАЗАТЕЛЬСТВО",
+    "authenticity": "СЕРТИФИКАТ ПОДЛИННОСТИ"
+  },
+  "auth": {
+    "login": "Вход",
+    "register": "Регистрация",
+    "email": "Email",
+    "password": "Пароль",
+    "logout": "Выйти",
+    "loginForSync": "Войдите для синхронизации",
+    "syncDescription": "Синхронизация записей в облаке"
+  },
+  "common": {
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "delete": "Удалить",
+    "confirm": "Подтвердить",
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "success": "Успешно",
+    "close": "Закрыть",
+    "open": "Открыть"
+  },
+  "languages": {
+    "ru": "Русский",
+    "he": "עברית",
+    "en": "English",
+    "ar": "العربية"
+  }
+}

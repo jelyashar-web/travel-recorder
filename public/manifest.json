@@ -1,0 +1,88 @@
+{
+  "name": "Dashcam Pro - מקליט הדרך",
+  "short_name": "Dashcam",
+  "description": "מערכת הקלטת דרך עם GPS, מהירות וחירום",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "🎥 התחל הקלטה",
+      "short_name": "הקלט",
+      "description": "התחל הקלטת וידאו מיידית",
+      "url": "/?action=start-recording",
+      "icons": [{ "src": "/shortcut-record.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "🚨 חירום",
+      "short_name": "SOS",
+      "description" :"הפעל מצב חירום",
+      "url": "/?action=emergency",
+      "icons": [{ "src": "/shortcut-sos.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "📊 סטטיסטיקות",
+      "short_name": "סטטיסטיקה",
+      "description": "צפה בסטטיסטיקות נסיעה",
+      "url": "/?view=stats",
+      "icons": [{ "src": "/shortcut-stats.png", "sizes": "96x96" }]
+    }
+  ],
+  "categories": ["navigation", "utilities", "travel"],
+  "lang": "he",
+  "dir": "rtl",
+  "screenshots": [
+    {
+      "src": "/screenshot-1.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "מסך הקלטה ראשי"
+    }
+  ]
+}

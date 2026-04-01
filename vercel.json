@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "name": "travel-recorder",
+  "builds": [
+    {
+      "src": "dist/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/dist/$1"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "/dist/index.html"
+    }
+  ]
+}

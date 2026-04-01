@@ -1,0 +1,97 @@
+{
+  "app": {
+    "name": "АвтоСтраж",
+    "tagline": "مساعدك الموثوق على الطريق"
+  },
+  "nav": {
+    "record": "تسجيل",
+    "recordings": "التسجيلات",
+    "stats": "الإحصائيات",
+    "settings": "الإعدادات"
+  },
+  "camera": {
+    "startRecording": "بدء التسجيل",
+    "stopRecording": "إيقاف",
+    "switchCamera": "تبديل الكاميرا",
+    "toggleMute": "كتم/تشغيل الصوت",
+    "photo": "صورة",
+    "sos": "SOS",
+    "holdFor3Seconds": "استمر 3 ثوانٍ"
+  },
+  "location": {
+    "speed": "السرعة",
+    "km/h": "كم/س",
+    "coordinates": "الإحداثيات",
+    "waitingForGPS": "في انتظار GPS...",
+    "gpsError": "GPS غير متاح"
+  },
+  "recordings": {
+    "title": "تسجيلاتي",
+    "local": "محلي",
+    "cloud": "سحابي",
+    "noRecordings": "لا توجد تسجيلات",
+    "recordFirst": "قم بإجراء أول تسجيل",
+    "duration": "المدة",
+    "size": "الحجم",
+    "date": "التاريخ",
+    "play": "تشغيل",
+    "download": "تحميل",
+    "delete": "حذف",
+    "uploadToCloud": "رفع إلى السحابة",
+    "courtExport": "تصدير قانوني",
+    "sync": "مزامنة"
+  },
+  "adas": {
+    "enable": "تفعيل ADAS",
+    "disable": "إيقاف ADAS",
+    "parkingMode": "وضع الوقوف",
+    "soundOn": "الصوت مفعل",
+    "soundOff": "الصوت معطل",
+    "objectsDetected": "الأجسام المكتشفة",
+    "distance": "المسافة",
+    "collisionWarning": "تحذير الاصطدام!",
+    "tooClose": "قريب جداً!",
+    "safe": "آمن",
+    "caution": "حذر",
+    "danger": "خطر"
+  },
+  "court": {
+    "exportTitle": "الحزمة القانونية",
+    "caseNumber": "رقم القضية",
+    "witnessNumber": "رقم الشهادة",
+    "officerName": "اسم الضابط",
+    "courtName": "اسم المحكمة",
+    "incidentDate": "تاريخ الحادث",
+    "incidentPlace": "مكان الحادث",
+    "description": "الوصف",
+    "createPackage": "إنشاء حزمة",
+    "legalEvidence": "دليل قانوني",
+    "authenticity": "شهادة الأصالة"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "register": "التسجيل",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "logout": "تسجيل الخروج",
+    "loginForSync": "سجل الدخول للمزامنة",
+    "syncDescription": "مزامنة التسجيلات إلى السحابة"
+  },
+  "common": {
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "delete": "حذف",
+    "confirm": "تأكيد",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجاح",
+    "close": "إغلاق",
+    "open": "فتح"
+  },
+  "languages": {
+    "ru": "Русский",
+    "he": "עברית",
+    "en": "English",
+    "ar": "العربية"
+  }
+}

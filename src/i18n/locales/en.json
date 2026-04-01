@@ -1,0 +1,97 @@
+{
+  "app": {
+    "name": "AutoStrazh",
+    "tagline": "Your reliable road assistant"
+  },
+  "nav": {
+    "record": "Record",
+    "recordings": "Recordings",
+    "stats": "Statistics",
+    "settings": "Settings"
+  },
+  "camera": {
+    "startRecording": "Start Recording",
+    "stopRecording": "Stop",
+    "switchCamera": "Switch Camera",
+    "toggleMute": "Toggle Mute",
+    "photo": "Photo",
+    "sos": "SOS",
+    "holdFor3Seconds": "Hold for 3 sec"
+  },
+  "location": {
+    "speed": "Speed",
+    "km/h": "km/h",
+    "coordinates": "Coordinates",
+    "waitingForGPS": "Waiting for GPS...",
+    "gpsError": "GPS unavailable"
+  },
+  "recordings": {
+    "title": "My Recordings",
+    "local": "Local",
+    "cloud": "Cloud",
+    "noRecordings": "No recordings",
+    "recordFirst": "Make your first recording",
+    "duration": "Duration",
+    "size": "Size",
+    "date": "Date",
+    "play": "Play",
+    "download": "Download",
+    "delete": "Delete",
+    "uploadToCloud": "Upload to Cloud",
+    "courtExport": "Court Export",
+    "sync": "Sync"
+  },
+  "adas": {
+    "enable": "Enable ADAS",
+    "disable": "Disable ADAS",
+    "parkingMode": "Parking Mode",
+    "soundOn": "Sound On",
+    "soundOff": "Sound Off",
+    "objectsDetected": "Objects detected",
+    "distance": "Distance",
+    "collisionWarning": "Collision Warning!",
+    "tooClose": "Too Close!",
+    "safe": "Safe",
+    "caution": "Caution",
+    "danger": "Danger"
+  },
+  "court": {
+    "exportTitle": "Legal Package",
+    "caseNumber": "Case Number",
+    "witnessNumber": "Witness Number",
+    "officerName": "Officer Name",
+    "courtName": "Court Name",
+    "incidentDate": "Incident Date",
+    "incidentPlace": "Incident Location",
+    "description": "Description",
+    "createPackage": "Create Package",
+    "legalEvidence": "LEGAL EVIDENCE",
+    "authenticity": "CERTIFICATE OF AUTHENTICITY"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "logout": "Logout",
+    "loginForSync": "Login for Sync",
+    "syncDescription": "Sync recordings to cloud"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "open": "Open"
+  },
+  "languages": {
+    "ru": "Русский",
+    "he": "עברית",
+    "en": "English",
+    "ar": "العربية"
+  }
+}
