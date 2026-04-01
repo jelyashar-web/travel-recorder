@@ -14,6 +14,7 @@ import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { Statistics } from './components/Statistics';
 import { AuthModal } from './components/AuthModal';
 import { UserProfile } from './components/UserProfile';
+import { LandingPage } from './components/LandingPage';
 
 import { useLocation } from './hooks/useLocation';
 import { useSettings } from './hooks/useSettings';
@@ -28,6 +29,12 @@ import { Recording, AccidentData } from './types';
 function App() {
   const { i18n } = useTranslation();
   
+  // Show landing page first
+  const [showLanding, setShowLanding] = useState(() => {
+    // Skip landing if already in app or came back
+    return !localStorage.getItem('skip-landing');
+  });
+  
   // Auth - WITHOUT auto anonymous login
   const { 
     user, 
@@ -39,6 +46,11 @@ function App() {
   
   const [, setShowAuthModal] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
+
+  const handleEnterApp = () => {
+    localStorage.setItem('skip-landing', 'true');
+    setShowLanding(false);
+  };
 
   // UI State
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -230,6 +242,11 @@ function App() {
     // Clear local recordings on logout
     setShowAuthModal(true);
   }, [signOut]);
+
+  // Show landing page first
+  if (showLanding) {
+    return <LandingPage onEnterApp={handleEnterApp} />;
+  }
 
   // Loading state
   if (authLoading || !settingsLoaded) {
