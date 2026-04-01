@@ -1,73 +1,103 @@
-# React + TypeScript + Vite
+# 🚗 מצלמת הדרך - Travel Recorder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+מערכת מצלמת דרך חכמה עם בינה מלאכותית, אחסון ענן וממשק בעברית.
 
-Currently, two official plugins are available:
+![GitHub](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ תכונות עיקריות
 
-## React Compiler
+### 🎥 הקלטה
+- הקלטת וידאו באיכות HD (עד 1080p)
+- מצלמה קדמית ואחורית
+- הקלטה מחזורית אוטומטית
+- שמירת GPS ומהירות על כל הקלטה
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🧠 בינה מלאכותית (ADAS)
+- זיהוי אובייקטים בזמן אמת (TensorFlow.js)
+- זיהוי רכבים, הולכי רגל, אופנועים
+- התראות התנגשות
+- זיהוי מרחק ומהירות יחסית
 
-## Expanding the ESLint configuration
+### ☁️ ענן
+- אחסון מקומי (IndexedDB)
+- סנכרון אוטומטי לענן (Supabase)
+- דלי ייעודי לכל משתמש
+- גיבוי אוטומטי של הקלטות חירום
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🔐 אבטחה
+- הרשמה והתחברות עם אימייל
+- כניסה כאורח (אנונימית)
+- איפוס סיסמה
+- מצב חשאי (Stealth mode)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 📱 ממשק
+- תמיכה מלאה בעברית (RTL)
+- ממשק מותאם למובייל
+- ניהול הקלטות
+- סטטיסטיקות נסיעה
+- ייצוא לבית משפט
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🚀 התקנה והרצה
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# התקנת תלויות
+npm install
+
+# הרצה בסביבת פיתוח
+npm run dev
+
+# בנייה לייצור
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ⚙️ הגדרות סביבה
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+צור קובץ `.env` עם המשתנים הבאים:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your_supabase_key
 ```
+
+## 🛠️ טכנולוגיות
+
+- **React 19** - UI Framework
+- **TypeScript** - Type Safety
+- **Vite** - Build Tool
+- **Tailwind CSS** - Styling
+- **TensorFlow.js** - AI Object Detection
+- **Supabase** - Backend & Storage
+- **i18next** - Internationalization
+
+## 📁 מבנה הפרויקט
+
+```
+src/
+├── components/     # קומפוננטות React
+├── hooks/         # Custom Hooks
+├── i18n/          # קבצי תרגום
+├── lib/           # תצורות (Supabase, etc.)
+├── services/      # שירותים חיצוניים
+├── types/         # TypeScript types
+└── App.tsx        # קומפוננטה ראשית
+```
+
+## 🔧 תכונות מתוכננות
+
+- [ ] מצלמת PiP (תמונה בתוך תמונה)
+- [ ] זיהוי תמרורים
+- [ ] יומן נסיעות מלא
+- [ ] דחיסת וידאו לפני העלאה
+- [ ] התראות תיקולים
+- [ ] תמיכה ב-WebRTC לשידור חי
+
+## 📄 רישיון
+
+MIT
+
+---
+
+פותח עם ❤️ על ידי jelyashar-web
