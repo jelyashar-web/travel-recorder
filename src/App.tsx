@@ -11,7 +11,6 @@ import { Settings as SettingsPanel } from './components/Settings';
 import { EmergencyButton } from './components/EmergencyButton';
 import { LocationStatus } from './components/LocationStatus';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
-
 import { Statistics } from './components/Statistics';
 import { AuthModal } from './components/AuthModal';
 import { UserProfile } from './components/UserProfile';
@@ -29,7 +28,7 @@ import { Recording, AccidentData } from './types';
 function App() {
   const { i18n } = useTranslation();
   
-  // Auth
+  // Auth - WITHOUT auto anonymous login
   const { 
     user, 
     loading: authLoading, 
@@ -38,7 +37,7 @@ function App() {
     isAuthenticated 
   } = useAuth();
   
-  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [, setShowAuthModal] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
 
   // UI State
@@ -59,8 +58,8 @@ function App() {
     uploadRecording, 
     uploadMultiple, 
     deleteCloudRecording,
-    getUploadStatus,
-    } = useCloudUpload(user?.id || null);
+    getUploadStatus 
+  } = useCloudUpload(user?.id || null);
 
   // Local storage
   const { 
@@ -86,10 +85,12 @@ function App() {
     };
   }, []);
 
-  // Show auth modal if not authenticated
+  // Show auth modal if not authenticated - NO AUTO LOGIN
   useEffect(() => {
     if (!authLoading && !user) {
       setShowAuthModal(true);
+    } else if (user) {
+      setShowAuthModal(false);
     }
   }, [authLoading, user]);
 
@@ -101,15 +102,15 @@ function App() {
 
   // Start GPS tracking
   useEffect(() => {
-    if (settingsLoaded) {
+    if (settingsLoaded && user) {
       startTracking();
     }
     return () => stopTracking();
-  }, [settingsLoaded, startTracking, stopTracking]);
+  }, [settingsLoaded, user, startTracking, stopTracking]);
 
   // Auto cleanup old recordings
   useEffect(() => {
-    if (!settingsLoaded) return;
+    if (!settingsLoaded || !user) return;
 
     const cleanup = async () => {
       const deleted = await clearOldRecordings(50, 30);
@@ -121,7 +122,7 @@ function App() {
     cleanup();
     const interval = setInterval(cleanup, 60 * 60 * 1000);
     return () => clearInterval(interval);
-  }, [settingsLoaded, clearOldRecordings]);
+  }, [settingsLoaded, user, clearOldRecordings]);
 
   // Check storage
   useEffect(() => {
@@ -223,14 +224,15 @@ function App() {
   const cancelEmergency = useCallback(() => setIsEmergency(false), []);
   const confirmEmergency = useCallback(() => setIsEmergency(false), []);
 
-  // Handle logout
+  // Handle logout - CLEAR EVERYTHING
   const handleLogout = useCallback(async () => {
     await signOut();
+    // Clear local recordings on logout
     setShowAuthModal(true);
   }, [signOut]);
 
   // Loading state
-  if (authLoading || !settingsLoaded || storageLoading) {
+  if (authLoading || !settingsLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
         <div className="flex flex-col items-center gap-4">
@@ -241,19 +243,23 @@ function App() {
     );
   }
 
+  // If not logged in - show auth modal ONLY
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-900">
+        <AuthModal 
+          isOpen={true} 
+          onClose={() => {}} 
+        />
+      </div>
+    );
+  }
+
   const isRTL = i18n.language === 'he' || i18n.language === 'ar';
   const storageStats = getStorageStats();
 
   return (
     <div className={`min-h-screen bg-gray-900 text-white ${isRTL ? 'rtl' : 'ltr'}`}>
-      {/* Auth Modal */}
-      <AuthModal 
-        isOpen={showAuthModal} 
-        onClose={() => {
-          if (user) setShowAuthModal(false);
-        }} 
-      />
-
       {/* User Profile Modal */}
       {showUserProfile && (
         <UserProfile 
@@ -371,82 +377,89 @@ function App() {
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-4 pb-24">
-        <div className="grid gap-4">
-          {/* Camera */}
-          <SimpleCamera
-            currentSpeed={location?.speed || null}
-            speedLimit={settings.speedLimit}
-            isEmergency={isEmergency}
-            onEmergencyStart={activateEmergency}
-            onRecordingComplete={handleRecordingComplete}
-            currentLocation={location}
-          />
+        {storageLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+            <span className="mr-3 text-gray-400">טוען הקלטות...</span>
+          </div>
+        ) : (
+          <div className="grid gap-4">
+            {/* Camera */}
+            <SimpleCamera
+              currentSpeed={location?.speed || null}
+              speedLimit={settings.speedLimit}
+              isEmergency={isEmergency}
+              onEmergencyStart={activateEmergency}
+              onRecordingComplete={handleRecordingComplete}
+              currentLocation={location}
+            />
 
-          {/* Location Status */}
-          <LocationStatus
-            location={location}
-            isTracking={isTracking}
-            speedLimit={settings.speedLimit}
-          />
+            {/* Location Status */}
+            <LocationStatus
+              location={location}
+              isTracking={isTracking}
+              speedLimit={settings.speedLimit}
+            />
 
-          {/* Storage & Cloud Info */}
-          <div className="grid grid-cols-2 gap-3">
-            {/* Local Storage */}
-            <div className="bg-gray-800/50 rounded-xl p-3">
-              <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
-                <Video className="w-4 h-4" />
-                <span>אחסון מקומי</span>
+            {/* Storage & Cloud Info */}
+            <div className="grid grid-cols-2 gap-3">
+              {/* Local Storage */}
+              <div className="bg-gray-800/50 rounded-xl p-3">
+                <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
+                  <Video className="w-4 h-4" />
+                  <span>אחסון מקומי</span>
+                </div>
+                <div className="text-2xl font-bold">{recordings.length}</div>
+                <div className="text-xs text-gray-500">{storageStats.totalSizeMB} MB</div>
+                <button
+                  onClick={() => clearOldRecordings(30, 7)}
+                  className="mt-2 text-xs text-red-400 hover:text-red-300 flex items-center gap-1"
+                >
+                  <Trash2 className="w-3 h-3" />
+                  נקה ישנות
+                </button>
               </div>
-              <div className="text-2xl font-bold">{recordings.length}</div>
-              <div className="text-xs text-gray-500">{storageStats.totalSizeMB} MB</div>
-              <button
-                onClick={() => clearOldRecordings(30, 7)}
-                className="mt-2 text-xs text-red-400 hover:text-red-300 flex items-center gap-1"
-              >
-                <Trash2 className="w-3 h-3" />
-                נקה ישנות
-              </button>
-            </div>
 
-            {/* Cloud Storage */}
-            <div className="bg-gray-800/50 rounded-xl p-3">
-              <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
-                <Cloud className="w-4 h-4" />
-                <span>ענן</span>
-                {isOnline ? (
-                  <Wifi className="w-3 h-3 text-green-400" />
-                ) : (
-                  <WifiOff className="w-3 h-3 text-red-400" />
+              {/* Cloud Storage */}
+              <div className="bg-gray-800/50 rounded-xl p-3">
+                <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
+                  <Cloud className="w-4 h-4" />
+                  <span>ענן</span>
+                  {isOnline ? (
+                    <Wifi className="w-3 h-3 text-green-400" />
+                  ) : (
+                    <WifiOff className="w-3 h-3 text-red-400" />
+                  )}
+                </div>
+                <div className="text-2xl font-bold">
+                  {isAnonymous() ? '—' : Object.keys(uploadProgress).length}
+                </div>
+                <div className="text-xs text-gray-500">
+                  {isAnonymous() ? 'נדרשת התחברות' : 'הקלטות בענן'}
+                </div>
+                {!isAnonymous() && (
+                  <button
+                    onClick={handleSyncAll}
+                    disabled={!isOnline}
+                    className="mt-2 text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1 disabled:opacity-50"
+                  >
+                    <Upload className="w-3 h-3" />
+                    סנכרן הכל
+                  </button>
                 )}
               </div>
-              <div className="text-2xl font-bold">
-                {isAnonymous() ? '—' : Object.keys(uploadProgress).length}
-              </div>
-              <div className="text-xs text-gray-500">
-                {isAnonymous() ? 'נדרשת התחברות' : 'הקלטות בענן'}
-              </div>
-              {!isAnonymous() && (
-                <button
-                  onClick={handleSyncAll}
-                  disabled={!isOnline}
-                  className="mt-2 text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1 disabled:opacity-50"
-                >
-                  <Upload className="w-3 h-3" />
-                  סנכרן הכל
-                </button>
-              )}
             </div>
-          </div>
 
-          {/* Recordings List */}
-          <RecordingList
-            recordings={recordings}
-            onDelete={handleDelete}
-            onUpload={handleUpload}
-            uploadProgress={uploadProgress}
-            isAnonymous={isAnonymous()}
-          />
-        </div>
+            {/* Recordings List */}
+            <RecordingList
+              recordings={recordings}
+              onDelete={handleDelete}
+              onUpload={handleUpload}
+              uploadProgress={uploadProgress}
+              isAnonymous={isAnonymous()}
+            />
+          </div>
+        )}
       </main>
 
       {/* Emergency Button */}

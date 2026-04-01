@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { X, Mail, Lock, User, Eye, EyeOff, Shield, AlertCircle } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, AlertCircle, Car } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
-type AuthMode = 'login' | 'register' | 'guest' | 'reset';
+type AuthMode = 'login' | 'register' | 'guest';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -18,7 +18,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [localError, setLocalError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const { signIn, signUp, signInAnonymously, resetPassword, loading } = useAuth();
+  const { signIn, signUp, signInAnonymously, loading } = useAuth();
 
   if (!isOpen) return null;
 
@@ -35,24 +35,29 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         onClose();
       }
     } else if (mode === 'register') {
+      // Validation
       if (password.length < 6) {
         setLocalError('הסיסמה חייבת להכיל לפחות 6 תווים');
         return;
       }
+      if (fullName.trim().length < 2) {
+        setLocalError('נא להזין שם מלא');
+        return;
+      }
+      
       const { error } = await signUp({ email, password, fullName });
       if (error) {
-        setLocalError('ההרשמה נכשלה. ייתכן שהאימייל כבר רשום.');
+        setLocalError('ההרשמה נכשלה: ' + error);
       } else {
-        setSuccessMessage('נשלח אימייל אימות. אנא בדוק את תיבת הדואר שלך.');
-        setTimeout(() => onClose(), 3000);
-      }
-    } else if (mode === 'reset') {
-      const { error } = await resetPassword(email);
-      if (error) {
-        setLocalError('שליחת האימייל נכשלה');
-      } else {
-        setSuccessMessage('נשלח אימייל איפוס סיסמה');
-        setTimeout(() => setMode('login'), 3000);
+        // After successful signup, automatically sign in
+        const { error: signInError } = await signIn({ email, password });
+        if (signInError) {
+          setLocalError('נרשמת בהצלחה! אבל ההתחברות נכשלה. נסה להתחבר ידנית.');
+          setMode('login');
+        } else {
+          setSuccessMessage('נרשמת והתחברת בהצלחה!');
+          setTimeout(() => onClose(), 1500);
+        }
       }
     }
   };
@@ -74,31 +79,20 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-gray-800 rounded-2xl max-w-md w-full overflow-hidden shadow-2xl">
+    <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-gray-800 rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border border-gray-700">
         {/* Header */}
         <div className="bg-gradient-to-r from-cyan-600 to-blue-600 p-6 text-center relative">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 p-1 hover:bg-white/20 rounded-lg transition-colors"
-          >
-            <X className="w-5 h-5 text-white" />
-          </button>
-          
           <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-            <Shield className="w-8 h-8 text-white" />
+            <Car className="w-8 h-8 text-white" />
           </div>
           <h2 className="text-2xl font-bold text-white">
-            {mode === 'login' && 'התחברות'}
-            {mode === 'register' && 'הרשמה'}
-            {mode === 'reset' && 'איפוס סיסמה'}
-            {mode === 'guest' && 'כניסה כאורח'}
+            מצלמת הדרך
           </h2>
           <p className="text-white/80 text-sm mt-1">
-            {mode === 'login' && 'התחבר לחשבון הקיים שלך'}
+            {mode === 'login' && 'התחבר לחשבון שלך'}
             {mode === 'register' && 'צור חשבון חדש'}
-            {mode === 'reset' && 'קבל קישור לאיפוס סיסמה'}
-            {mode === 'guest' && 'השתמש באפליקציה ללא הרשמה'}
+            {mode === 'guest' && 'כניסה ללא הרשמה'}
           </p>
         </div>
 
@@ -117,11 +111,11 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             </div>
           )}
 
-          {mode !== 'guest' && mode !== 'reset' && (
+          {mode !== 'guest' && (
             <form onSubmit={handleSubmit} className="space-y-4">
               {mode === 'register' && (
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">שם מלא</label>
+                  <label className="block text-sm text-gray-400 mb-1">שם מלא *</label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                     <input
@@ -137,7 +131,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               )}
 
               <div>
-                <label className="block text-sm text-gray-400 mb-1">אימייל</label>
+                <label className="block text-sm text-gray-400 mb-1">אימייל *</label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                   <input
@@ -152,7 +146,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               </div>
 
               <div>
-                <label className="block text-sm text-gray-400 mb-1">סיסמה</label>
+                <label className="block text-sm text-gray-400 mb-1">סיסמה *</label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                   <input
@@ -177,16 +171,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 )}
               </div>
 
-              {mode === 'login' && (
-                <button
-                  type="button"
-                  onClick={() => switchMode('reset')}
-                  className="text-sm text-cyan-400 hover:text-cyan-300"
-                >
-                  שכחת סיסמה?
-                </button>
-              )}
-
               <button
                 type="submit"
                 disabled={loading}
@@ -200,43 +184,8 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 ) : mode === 'login' ? (
                   'התחבר'
                 ) : (
-                  'הירשם'
+                  'צור חשבון'
                 )}
-              </button>
-            </form>
-          )}
-
-          {mode === 'reset' && (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm text-gray-400 mb-1">אימייל</label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:border-cyan-500 focus:outline-none"
-                    placeholder="your@email.com"
-                    required
-                  />
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg transition-all"
-              >
-                {loading ? 'שולח...' : 'שלח קישור איפוס'}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => switchMode('login')}
-                className="w-full text-center text-gray-400 hover:text-gray-300 py-2"
-              >
-                חזרה להתחברות
               </button>
             </form>
           )}
@@ -244,9 +193,13 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           {mode === 'guest' && (
             <div className="space-y-4">
               <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 text-yellow-400 text-sm">
-                <p className="font-bold mb-1">שימו לב!</p>
-                <p>במצב אורח, ההקלטות שלכם יישמרו רק במכשיר. אם תמחקו את הדפדפן או הנתונים - ההקלטות יאבדו.</p>
-                <p className="mt-2">מומלץ להירשם כדי לגבות את ההקלטות לענן.</p>
+                <p className="font-bold mb-1">⚠️ שים לב!</p>
+                <p>במצב אורח:</p>
+                <ul className="list-disc list-inside mt-1 space-y-1">
+                  <li>ההקלטות נשמרות רק במכשיר</li>
+                  <li>אין גיבוי לענן</li>
+                  <li>אם תנקה את הדפדפן - הנתונים יימחקו</li>
+                </ul>
               </div>
 
               <button
@@ -261,13 +214,13 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 onClick={() => switchMode('register')}
                 className="w-full text-cyan-400 hover:text-cyan-300 font-bold py-2"
               >
-                אני רוצה להירשם
+                אני רוצה להירשם לגיבוי בענן
               </button>
             </div>
           )}
 
           {/* Divider */}
-          {mode !== 'guest' && mode !== 'reset' && (
+          {mode !== 'guest' && (
             <div className="my-6 flex items-center gap-3">
               <div className="flex-1 h-px bg-gray-700" />
               <span className="text-gray-500 text-sm">או</span>
@@ -276,7 +229,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           )}
 
           {/* Switch mode buttons */}
-          {mode !== 'guest' && mode !== 'reset' && (
+          {mode !== 'guest' && (
             <div className="space-y-2">
               {mode === 'login' ? (
                 <>
@@ -294,15 +247,38 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   </button>
                 </>
               ) : (
-                <button
-                  onClick={() => switchMode('login')}
-                  className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition-all"
-                >
-                  כבר יש לי חשבון
-                </button>
+                <>
+                  <button
+                    onClick={() => switchMode('login')}
+                    className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition-all"
+                  >
+                    כבר יש לי חשבון
+                  </button>
+                  <button
+                    onClick={() => switchMode('guest')}
+                    className="w-full border border-gray-600 hover:bg-gray-700/50 text-gray-400 font-bold py-3 rounded-lg transition-all"
+                  >
+                    המשך ללא הרשמה
+                  </button>
+                </>
               )}
             </div>
           )}
+
+          {mode === 'guest' && (
+            <button
+              onClick={() => switchMode('login')}
+              className="w-full mt-4 text-gray-400 hover:text-gray-300"
+            >
+              חזרה להתחברות
+            </button>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-4 bg-gray-800/50 border-t border-gray-700 text-center text-xs text-gray-500">
+          <p>בהתחברות אתה מסכים לתנאי השימוש</p>
+          <p className="mt-1">הנתונים מאובטחים ונשמרים בהצפנה</p>
         </div>
       </div>
     </div>
