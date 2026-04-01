@@ -8,7 +8,7 @@ interface LocationStatusProps {
 }
 
 export function LocationStatus({ location, isTracking, speedLimit }: LocationStatusProps) {
-  const isSpeeding = location?.speed !== null && location!.speed! > speedLimit;
+  const isSpeeding = location?.speed != null && location.speed > speedLimit;
 
   if (!location) {
     return (

@@ -201,7 +201,7 @@ ${recording.location ? `
 Широта:              ${recording.location.latitude.toFixed(8)}
 Долгота:             ${recording.location.longitude.toFixed(8)}
 Точность:            ±${Math.round(recording.location.accuracy)} метров
-Скорость:            ${recording.location.speed ? Math.round(recording.location.speed) + ' км/ч' : 'N/A'}
+Скорость:            ${recording.location?.speed ? Math.round(recording.location.speed) + ' км/ч' : 'N/A'}
 Направление:         ${recording.location.heading ? Math.round(recording.location.heading) + '°' : 'N/A'}
 ` : 'GPS данные отсутствуют'}
 

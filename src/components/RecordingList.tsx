@@ -171,12 +171,10 @@ export function RecordingList({
                         </span>
                       )}
                       
-                      {recording.location && (
+                      {recording.location && recording.location.speed !== null && (
                         <span className="flex items-center gap-1">
                           <MapPin className="w-4 h-4" />
-                          {recording.location.speed !== null && (
-                            <span>{Math.round(recording.location.speed)} קמ"ש</span>
-                          )}
+                          <span>{Math.round(recording.location.speed)} קמ"ש</span>
                         </span>
                       )}
 
